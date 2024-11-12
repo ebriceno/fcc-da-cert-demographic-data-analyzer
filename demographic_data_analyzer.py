@@ -43,16 +43,10 @@ def calculate_demographic_data(print_data=True):
     highest_earning_country = None
     highest_earning_country_percentage = 0
 
-    for idx, val in highest_earning_countries.items():
-        current_country = idx
-        current_country_population = population_country[current_country]
-        current_country_big_earners = val
-
-        current_country_big_earners_pct = (current_country_big_earners * 100) / current_country_population
-
-        if(current_country_big_earners_pct > highest_earning_country_percentage):
-            highest_earning_country_percentage = round(current_country_big_earners_pct, 1)
-            highest_earning_country = current_country
+    # Calculate percentage of high earners for each country and find max
+    earning_percentages = (highest_earning_countries * 100 / population_country)
+    highest_earning_country = earning_percentages.idxmax()
+    highest_earning_country_percentage = round(earning_percentages.max(), 1)
 
     # Identify the most popular occupation for those who earn >50K in India.
     top_IN_occupation = df.loc[(df['salary'] == '>50K') & (df['native-country'] == 'India'), 'occupation'].value_counts().index[0]
